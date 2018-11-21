@@ -12,10 +12,23 @@ class ReviewsController < ApplicationController
   def create
     @review = Review.new(review_params)
     @review.restaurant = Restaurant.find(params[:restaurant_id])
-    @review.save
 
-    redirect_to restaurants_path
+    if @review.save
+      redirect_to restaurant_path(@review.restaurant_id)
+    else
+      # render :new
+      redirect_to new_restaurant_review_path
+    end
   end
+
+    # respond_to do |format|
+    #   if @restaurant.save
+    #     format.html { redirect_to @restaurant, notice: 'Restaurant was successfully created.' }
+    #     format.json { render :show, status: :created, location: @restaurant }
+    #   else
+    #     format.html { render :new }
+    #     format.json { render json: @restaurant.errors, status: :unprocessable_entity }
+    #   end
 
   private
 
